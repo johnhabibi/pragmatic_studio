@@ -10,7 +10,7 @@ class Die
   end
 end
 
-if __FILE__ == $0
+if $PROGRAM_NAME == __FILE__
   die = Die.new
   puts die.roll
   puts die.roll

@@ -18,7 +18,7 @@ module GameTurn
   end
 end
 
-if __FILE__ == $0
-  player = Player.new("curly", 125)
+if $PROGRAM_NAME == __FILE__
+  player = Player.new('curly', 125)
   GameTurn.take_turn(player)
 end

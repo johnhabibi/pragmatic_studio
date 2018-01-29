@@ -3,7 +3,6 @@ require_relative 'game_turn'
 require_relative 'treasure_trove'
 
 class Game
-
   attr_accessor :title
 
   def initialize(title)
@@ -43,7 +42,7 @@ class Game
   def print_stats
     puts "\n#{@title} Statistics:"
 
-    strong_players, wimpy_players = @players.partition { |player| player.strong? }
+    strong_players, wimpy_players = @players.partition(&:strong?)
 
     puts "#{strong_players.size} strong players:"
     strong_players.each do |player|
