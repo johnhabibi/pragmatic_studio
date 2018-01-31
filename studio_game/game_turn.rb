@@ -13,12 +13,13 @@ module GameTurn
     else
       player.w00t
     end
-
+    
     treasure = TreasureTrove.random
+    player.found_treasure(treasure)
   end
 end
 
-if $PROGRAM_NAME == __FILE__
-  player = Player.new('curly', 125)
+if __FILE__ == $0
+  player = Player.new("curly", 125)
   GameTurn.take_turn(player)
 end

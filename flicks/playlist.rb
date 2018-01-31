@@ -1,7 +1,8 @@
 require_relative 'movie'
+require_relative 'waldorf_and_statler'
+require_relative 'snack_bar'
 
 class Playlist
-
   attr_reader :name
 
   def initialize(name)
@@ -13,27 +14,47 @@ class Playlist
     @movies << a_movie
   end
 
-  def roll_die
-    rand(1..6)
-  end
-
-  def play
+  def play(viewings)
     puts "#{@name}'s playlist:"
 
-    puts @movies
+    puts @movies.sort
 
-    @movies.each do |movie|
-      case roll_die
-      when 1..2
-        movie.thumbs_down
-        puts "#{movie.title} got a thumbs down."
-      when 3..4
-        puts "#{movie.title} was skipped."
-      else
-        movie.thumbs_up
-        puts "#{movie.title} got a thumbs up!"
+    snacks = SnackBar::SNACKS
+    puts "\nThere are #{snacks.size} snacks available in the snack bar:"
+    snacks.each do |snack|
+      puts "#{snack.name} has #{snack.carbs} carbs"
+    end
+
+    1.upto(viewings) do |count|
+      puts "\nViewing #{count}:"
+      @movies.each do |movie|
+        WaldorfAndStatler.review(movie)
+        snack = SnackBar.random
+        movie.ate_snack(snack)
+        puts movie
       end
-      puts movie
+    end
+  end
+
+  def total_carbs_consumed
+    @movies.reduce(0) { |sum, movie| sum + movie.carbs_consumed }
+  end
+
+  def print_stats
+    puts "\n#{@name}'s Stats:"
+
+    hits, flops = @movies.partition(&:hit?)
+
+    puts "\nHits:"
+    puts hits.sort
+
+    puts "\nFlops:"
+    puts flops.sort
+
+    puts "\n#{total_carbs_consumed} total carbs consumed"
+    @movies.sort.each do |movie|
+      puts "\n#{movie.title}'s snack totals:"
+      puts "#{movie.carbs_consumed} grand total carbs"
     end
   end
 end
